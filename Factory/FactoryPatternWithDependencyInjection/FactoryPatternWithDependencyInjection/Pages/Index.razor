@@ -1,0 +1,38 @@
+﻿@page "/"
+@inject IAbstractFactory<IDateTimeSample1> Factory
+@inject IAbstractFactory<IRandomNumSample> RandFactory
+@inject IEmployeeFactory EmployeeDataFactory
+@inject IVehicleFactory VehicleDataFactory
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, @_employee?.Name!</h1>
+<h2>@_currentSample?.CurrentDateTime</h2>
+<h2>@_randomSample?.RandomValue</h2>
+<br/>
+<hr/>
+<h2>@_vehicle?.Start()</h2>
+<hr/>
+
+<button class="btn btn-primary" @onclick="GetNewTime">Get new time</button>
+
+@code
+{
+    IDateTimeSample1? _currentSample;
+    IRandomNumSample? _randomSample;
+    IEmployee? _employee;
+    IVehicle? _vehicle;
+    
+    protected override void OnInitialized()
+    {
+        _employee = EmployeeDataFactory.Create("Batman", 1_000_000_000);
+        _vehicle = VehicleDataFactory.Create("Car");
+    }
+
+    private void GetNewTime()
+    {
+        _currentSample = Factory.Create();
+        _randomSample = RandFactory.Create();
+        _vehicle = VehicleDataFactory.Create("Tuk");
+    }
+}
